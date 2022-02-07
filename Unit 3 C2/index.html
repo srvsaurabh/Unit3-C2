@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+  </head>
+<style>
+  #navbar{
+    display: flex;
+    height: 50px;
+    width: 100%;
+    flex-direction: row-reverse;
+    background-color: aqua;
+}
+
+#navbar>div{
+  margin: 10px;
+  width: 60px;
+  cursor: pointer;
+}
+
+#menu{
+  display: grid;
+  height: fit-content;
+  width: 100%;
+}
+#container{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  /* width: 90%; */
+  margin: auto;
+  /* height: 40px; */
+}
+#container>div{
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+img{
+  height: 150px;
+  width: 90%;
+}
+
+</style>
+  <body>
+    <div id="navbar">
+      <!--Add menu divs here-->
+      <div id="count">Count</div>
+      <div>Cart</div>
+      <div>SignUp</div>
+      <div>SignIn</div>
+      <div>Menu</div>
+      
+    </div>
+
+    <div id="menu">
+
+      <!--Show indian dishes here in grid format-->
+      <!-- add an add to cart button to each dish, give it HTML id as 'addtocart' -->
+
+    </div>
+    <div id="container"></div>
+  </body>
+
+</html>
+
+<script>
+  let url = 'https://www.themealdb.com/api/json/v1/1/filter.php?a=Indian'
+
+  async function getProduct() {
+    try {
+      let res = await fetch(" https://www.themealdb.com/api/json/v1/1/filter.php?a=Indian")
+      let data = await res.json()
+      appendproduct(data)
+    }
+    catch(error){
+      console.log("error:", error)
+    }
+  }
+
+    getProduct()
+    function appendproduct(data) {
+      console.log("data:", data.meals)
+      var datameals = data.meals
+      datameals.forEach(function (el) {
+        let div = document.createElement("div")
+
+        let image = document.createElement("img")
+        image.src = el.strMealThumb
+
+        let price = document.createElement("p")
+        price.innerText = "Price: INR " + ((el.idMeal/1000) + 40);
+
+        let name = document.createElement("p")
+        name.innerText = el.strMeal
+
+        let addToCartButton = document.createElement("button")
+        addToCartButton.textContent = "Add to Cart"
+        addToCartButton.onclick = function (event) {
+          addToCart(el)
+        }
+
+        div.append(image, price, name, addToCartButton)
+        container.append(div);
+      })
+
+      // fucntion addToCart(el) {
+      //   let cart = json,parse(localStorage.getItem("cart"))
+
+      //   cart.push(el)
+
+      //   localStorage.setItem("cart".json.stringfy(cart))
+      //   refreshCartCount(cart)
+      // }
+    }
+
+</script>
